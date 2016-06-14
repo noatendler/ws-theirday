@@ -1,0 +1,29 @@
+{
+  "name": "webservice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noatendler/ws-theirday.git"
+  },
+  "author": "adi and noa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noatendler/ws-theirday/issues"
+  },
+  "homepage": "https://github.com/noatendler/ws-theirday#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "connect-multiparty": "^2.0.0",
+    "cookie-parser": "^1.4.3",
+    "mime": "^1.3.4",
+    "mongoose": "^4.4.20",
+    "passport-google-oauth": "^1.0.0"
+  },
+  "devDependencies": {},
+  "description": ""
+}
