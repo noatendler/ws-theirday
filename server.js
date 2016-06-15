@@ -75,7 +75,6 @@ res.set("Content-Type", "application/json");
 
 
 app.get('/themes', themes.getData);
-app.post('/upload',multipartAction,activityFunc.saveData);
 app.post('/user',user.saveData);
 app.get('/frozen',frozen.getData);
 
