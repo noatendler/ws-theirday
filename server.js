@@ -1,10 +1,12 @@
 var express=require('express');
 var app = express();
+var activityFunc = require('./controller/activityController');
 var port = process.env.PORT || 3000;
 var bodyParser = require('body-parser');
 var multipart = require('connect-multiparty');
 var multipartAction = multipart();
 var user = require('./controller/user');
+var party = require('./controller/party');
 var cookieParser = require('cookie-parser');
 var themes = require('./controller/themesController');
 var frozen=require('./controller/frozenController');
@@ -74,8 +76,10 @@ res.set("Content-Type", "application/json");
 
 
 
+app.get('/activities', activityFunc.getData);
 app.get('/themes', themes.getData);
 app.post('/user',user.saveData);
+app.get('/party',party.getData);
 app.get('/frozen',frozen.getData);
 
 app.listen(port);
