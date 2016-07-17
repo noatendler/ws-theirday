@@ -5,7 +5,9 @@ var partySchema = new schema({
   title: {type:String, required : true},
   description  : {type:String, required:true},
   imageUrl: {type:String,required:true},
- ranking:Number
+  ranking:Number,
+  cookieEmail:String,
+  id:Number
 },{collection: 'party'});
 
 var Party = mongoose.model('Party', partySchema);

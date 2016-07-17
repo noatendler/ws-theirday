@@ -1,7 +1,86 @@
 var mongoose = require('mongoose');
 var Party =require ('../models/partySchema'); 
+var fs = require('fs')
+    , knox = require('knox');
+var mime = require('mime');
 
+function hasher(){
+  var AUID = [],
+      CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  for (var i = 0; i < 6; i++) {
+    AUID.push(CHARS[Math.floor(Math.random()*62)]);
+  }
+  return AUID.join('');
+};
 
+var client = knox.createClient({
+    key: ''
+    , secret: ''
+    , bucket: ''
+});
+
+exports.saveData = function(request, response){  
+    var cookies = parseCookies(request);
+
+    function parseCookies (request) {
+    var list = {},
+        rc = request.headers.cookie;
+
+    rc && rc.split(';').forEach(function( cookie ) {
+        var parts = cookie.split('=');
+        list[parts.shift().trim()] = decodeURI(parts.join('='));
+    });
+
+    return list;
+}
+
+var temp=myFunction(cookies.cookieEmail);
+
+console.log(temp);
+
+function myFunction(str) {
+    var res = str.replace("%40", "@");
+    return res;
+ }
+
+    var file = request.files.file;
+    var hash = hasher();
+
+    var stream = fs.createReadStream(file.path)
+    var mimetype = mime.lookup(file.path);
+    var req;
+
+    if (mimetype.localeCompare('image/jpeg')
+        || mimetype.localeCompare('image/pjpeg')
+        || mimetype.localeCompare('image/png')
+        || mimetype.localeCompare('image/gif')) {
+
+        req = client.putStream(stream, hash+'-party.png',
+            {
+                'Content-Type': mimetype,
+                'Cache-Control': 'max-age=604800',
+                'x-amz-acl': 'public-read',
+                'Content-Length': file.size
+            },
+            function(err, result) {
+             var saveParty = new Party({
+                title: request.body.title,
+                description  : request.body.description,
+                imageUrl: req.url+hash+"-party.png",
+                cookieEmail: cookies.cookieEmail
+              });
+              saveParty.save(function(error, result) {
+                if (error) {
+                  console.error(error);
+                } else {
+                  response.redirect('http://localhost:8080/addParty.html');
+                };
+              })
+          });
+       } else {
+            console.log(err);
+        }
+}
 
 exports.getData = function(req, res){
     console.log(req);
